@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ar" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>إنشاء قصة رعب</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        textarea {
+            width: 100%;
+            height: 150px;
+            margin-top: 10px;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>إنشاء قصة رعب</h1>
+    <label for="storyType">اختر نوع القصة:</label>
+    <select id="storyType">
+        <option value="رعب">رعب</option>
+        <option value="مغامرة">مغامرة</option>
+        <option value="خيال">خيال</option>
+    </select>
+    
+    <button id="generateStoryButton">إنشاء القصة</button>
+    
+    <h2>القصة:</h2>
+    <textarea id="storyOutput" readonly></textarea>
+    
+    <button id="convertToAudioButton">تحويل القصة إلى صوت</button>
+</div>
+
+<script>
+    document.getElementById('generateStoryButton').onclick = async function() {
+        const storyType = document.getElementById('storyType').value;
+        
+        // هنا نرسل طلب إلى API لإنشاء القصة
+        const response = await fetch('https://api.openai.com/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': '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' // استبدل بـ API Key الخاص بك
+            },
+            body: JSON.stringify({
+                model: "gpt-3.5-turbo", // أو النموذج الذي تفضله
+                messages: [
+                    { role: "user", content: `اكتب لي قصة ${storyType}` }
+                ]
+            })
+        });
+
+        const data = await response.json();
+        const story = data.choices[0].message.content; // استخرج القصة من الرد
+        
+        document.getElementById('storyOutput').value = story;
+    };
+
+    document.getElementById('convertToAudioButton').onclick = function() {
+        const storyText = document.getElementById('storyOutput').value;
+
+        // استبدل هذا الجزء بالكود الخاص بتحويل النص إلى صوت
+        const audioUrl = `https://api.elevenlabs.io/speech/generate?text=${encodeURIComponent(storyText)}`; // نموذج URL لتحويل النص إلى صوت
+        
+        // تشغيل الصوت
+        const audio = new Audio(audioUrl);
+        audio.play();
+    };
+</script>
+
+</body>
+</html>
