@@ -64,35 +64,44 @@
 <script>
     document.getElementById('generateStoryButton').onclick = async function() {
         const storyType = document.getElementById('storyType').value;
-        
-        // هنا نرسل طلب إلى API لإنشاء القصة
-        const response = await fetch('https://api.openai.com/v1/chat/completions', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': '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' // استبدل بـ API Key الخاص بك
-            },
-            body: JSON.stringify({
-                model: "gpt-3.5-turbo", // أو النموذج الذي تفضله
-                messages: [
-                    { role: "user", content: `اكتب لي قصة ${storyType}` }
-                ]
-            })
-        });
 
-        const data = await response.json();
-        const story = data.choices[0].message.content; // استخرج القصة من الرد
-        
-        document.getElementById('storyOutput').value = story;
+        try {
+            const response = await fetch('https://api.openai.com/v1/chat/completions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer YOUR_OPENAI_API_KEY' // استبدل بـ API Key الخاص بك
+                },
+                body: JSON.stringify({
+                    model: "gpt-3.5-turbo",
+                    messages: [
+                        { role: "user", content: `اكتب لي قصة ${storyType}` }
+                    ]
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            if (data.choices && data.choices.length > 0) {
+                const story = data.choices[0].message.content;
+                document.getElementById('storyOutput').value = story;
+            } else {
+                document.getElementById('storyOutput').value = 'لم يتم العثور على قصة.';
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('حدث خطأ أثناء إنشاء القصة. تحقق من وحدة التحكم لمزيد من التفاصيل.');
+        }
     };
 
     document.getElementById('convertToAudioButton').onclick = function() {
         const storyText = document.getElementById('storyOutput').value;
-
-        // استبدل هذا الجزء بالكود الخاص بتحويل النص إلى صوت
-        const audioUrl = `https://api.elevenlabs.io/speech/generate?text=${encodeURIComponent(storyText)}`; // نموذج URL لتحويل النص إلى صوت
+        const audioUrl = `https://api.elevenlabs.io/speech/generate?text=${encodeURIComponent(storyText)}`;
         
-        // تشغيل الصوت
+        // تأكد من أن الرابط صالح و يعمل بشكل صحيح
         const audio = new Audio(audioUrl);
         audio.play();
     };
