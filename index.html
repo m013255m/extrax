@@ -1,111 +1,527 @@
 <!DOCTYPE html>
-<html lang="ar" dir="ltr">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>إنشاء قصة رعب</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>متجر الملابس الفاخرة</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+        /* التصميم العام */
+        * {
             margin: 0;
-            padding: 20px;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
         }
-        h1 {
-            text-align: center;
+        
+        body {
+            background-color: #f9f9f9;
+            color: #333;
+            line-height: 1.6;
         }
+        
         .container {
-            max-width: 600px;
+            max-width: 100%;
+            padding: 0 15px;
             margin: 0 auto;
-            background: #fff;
+        }
+        
+        /* قسم المنتج الرئيسي */
+        .product-header {
+            position: relative;
+            margin-bottom: 20px;
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .main-product-image {
+            width: 100%;
+            height: 350px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        
+        .main-product-image:hover {
+            transform: scale(1.03);
+        }
+        
+        .product-badge {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background-color: #e74c3c;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        
+        /* تفاصيل المنتج */
+        .product-details {
+            background: white;
             padding: 20px;
             border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
-        textarea {
+        
+        .product-title {
+            font-size: 22px;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+        
+        .product-price {
+            font-size: 24px;
+            font-weight: bold;
+            color: #e74c3c;
+            margin-bottom: 15px;
+        }
+        
+        .product-description {
+            margin-bottom: 15px;
+            color: #7f8c8d;
+        }
+        
+        .product-features {
+            margin-bottom: 20px;
+        }
+        
+        .feature-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        
+        .feature-icon {
+            margin-left: 10px;
+            color: #3498db;
+        }
+        
+        /* معرض الصور المتحرك */
+        .gallery-section {
+            margin-bottom: 30px;
+        }
+        
+        .gallery-title {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #2c3e50;
+            text-align: center;
+        }
+        
+        .swiper {
             width: 100%;
-            height: 150px;
-            margin-top: 10px;
+            height: 200px;
+            border-radius: 10px;
         }
-        button {
-            background-color: #28a745;
+        
+        .swiper-slide {
+            text-align: center;
+            background: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .swiper-slide img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .swiper-button-next, .swiper-button-prev {
+            color: #3498db;
+            background: rgba(255, 255, 255, 0.7);
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .swiper-button-next::after, .swiper-button-prev::after {
+            font-size: 16px;
+            font-weight: bold;
+        }
+        
+        /* نموذج الطلب */
+        .order-form {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        
+        .form-title {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: #2c3e50;
+            text-align: center;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #34495e;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border 0.3s ease;
+        }
+        
+        .form-control:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+        
+        /* أزرار اختيار الألوان */
+        .color-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .color-option {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .color-option.selected {
+            border-color: #3498db;
+            transform: scale(1.1);
+        }
+        
+        /* عداد الكمية */
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .quantity-btn {
+            width: 40px;
+            height: 40px;
+            background: #f1f1f1;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 5px;
+        }
+        
+        .quantity-input {
+            width: 60px;
+            text-align: center;
+            margin: 0 10px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        
+        /* زر الشراء */
+        .order-btn {
+            width: 100%;
+            padding: 15px;
+            background: #e74c3c;
             color: white;
             border: none;
-            padding: 10px;
             border-radius: 5px;
+            font-size: 18px;
+            font-weight: bold;
             cursor: pointer;
-            margin-top: 10px;
-            width: 100%;
+            transition: background 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
-        button:hover {
-            background-color: #218838;
+        
+        .order-btn:hover {
+            background: #c0392b;
+        }
+        
+        /* تأثيرات الحركة */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animated {
+            animation: fadeIn 0.5s ease forwards;
+        }
+        
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+        
+        /* التكيف مع أحجام الشاشات */
+        @media (max-width: 768px) {
+            .main-product-image {
+                height: 300px;
+            }
+            
+            .product-title {
+                font-size: 20px;
+            }
+            
+            .product-price {
+                font-size: 22px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .main-product-image {
+                height: 250px;
+            }
+            
+            .swiper {
+                height: 180px;
+            }
         }
     </style>
 </head>
 <body>
-
-<div class="container">
-    <h1>إنشاء قصة رعب</h1>
-    <label for="storyType">اختر نوع القصة:</label>
-    <select id="storyType">
-        <option value="رعب">رعب</option>
-        <option value="مغامرة">مغامرة</option>
-        <option value="خيال">خيال</option>
-    </select>
-    
-    <button id="generateStoryButton">إنشاء القصة</button>
-    
-    <h2>القصة:</h2>
-    <textarea id="storyOutput" readonly></textarea>
-    
-    <button id="convertToAudioButton">تحويل القصة إلى صوت</button>
-</div>
-
-<script>
-    document.getElementById('generateStoryButton').onclick = async function() {
-        const storyType = document.getElementById('storyType').value;
-
-        try {
-            const response = await fetch('https://api.openai.com/v1/chat/completions', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer YOUR_OPENAI_API_KEY' // استبدل بـ API Key الخاص بك
-                },
-                body: JSON.stringify({
-                    model: "gpt-3.5-turbo",
-                    messages: [
-                        { role: "user", content: `اكتب لي قصة ${storyType}` }
-                    ]
-                })
-            });
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-
-            const data = await response.json();
-            if (data.choices && data.choices.length > 0) {
-                const story = data.choices[0].message.content;
-                document.getElementById('storyOutput').value = story;
-            } else {
-                document.getElementById('storyOutput').value = 'لم يتم العثور على قصة.';
-            }
-        } catch (error) {
-            console.error('Error:', error);
-            alert('حدث خطأ أثناء إنشاء القصة. تحقق من وحدة التحكم لمزيد من التفاصيل.');
-        }
-    };
-
-    document.getElementById('convertToAudioButton').onclick = function() {
-        const storyText = document.getElementById('storyOutput').value;
-        const audioUrl = `https://api.elevenlabs.io/speech/generate?text=${encodeURIComponent(storyText)}`;
+    <div class="container">
+        <!-- قسم المنتج الرئيسي -->
+        <section class="product-header animated">
+            <img src="https://images.unsplash.com/photo-1529374255404-311a2a4f1fd9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" 
+                 alt="قميص رجالي كلاسيك" class="main-product-image">
+            <span class="product-badge">جديد</span>
+        </section>
         
-        // تأكد من أن الرابط صالح و يعمل بشكل صحيح
-        const audio = new Audio(audioUrl);
-        audio.play();
-    };
-</script>
+        <!-- تفاصيل المنتج -->
+        <section class="product-details animated delay-1">
+            <h1 class="product-title">قميص رجالي كلاسيك - قطني</h1>
+            <div class="product-price">249 ج.م</div>
+            <p class="product-description">
+                قميص رجالي أنيق بتصميم كلاسيكي عصير، مصنوع من القطن بنسبة 100% لراحة فائقة طوال اليوم.
+            </p>
+            <div class="product-features">
+                <div class="feature-item">
+                    <span>✓</span>
+                    <span class="feature-icon">مقاسات متوفرة: S, M, L, XL</span>
+                </div>
+                <div class="feature-item">
+                    <span>✓</span>
+                    <span class="feature-icon">متاح ب 6 ألو��ن مختلفة</span>
+                </div>
+                <div class="feature-item">
+                    <span>✓</span>
+                    <span class="feature-icon">شحن سريع خلال 24-48 ساعة</span>
+                </div>
+            </div>
+        </section>
+        
+        <!-- معرض الصور المتحرك -->
+        <section class="gallery-section animated delay-2">
+            <h2 class="gallery-title">معرض المنتج</h2>
+            <div class="swiper">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                        <img src="https://images.unsplash.com/photo-1529374255404-311a2a4f1fd9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" 
+                             alt="قميص رجالي - عرض أمامي">
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="https://images.unsplash.com/photo-1617137968427-85924c800a22?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" 
+                             alt="قميص رجالي - عرض جانبي">
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" 
+                             alt="قميص رجالي - تفاصيل القماش">
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="https://images.unsplash.com/photo-1598033129183-c4f50c736f10?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" 
+                             alt="قميص رجالي - عرض خلفي">
+                    </div>
+                </div>
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+            </div>
+        </section>
+        
+        <!-- نموذج الطلب -->
+        <section class="order-form animated delay-3">
+            <h2 class="form-title">أكمل بيانات الطلب</h2>
+            <form id="orderForm">
+                <div class="form-group">
+                    <label for="fullName" class="form-label">الاسم بالكامل</label>
+                    <input type="text" id="fullName" class="form-control" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="phone1" class="form-label">رقم الهاتف الأساسي</label>
+                    <input type="tel" id="phone1" class="form-control" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="phone2" class="form-label">رقم هاتف احتياطي (اختياري)</label>
+                    <input type="tel" id="phone2" class="form-control">
+                </div>
+                
+                <div class="form-group">
+                    <label for="address" class="form-label">العنوان بالتفصيل</label>
+                    <textarea id="address" class="form-control" rows="3" required></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">اختر اللون</label>
+                    <div class="color-options">
+                        <div class="color-option selected" style="background-color: #3498db;" data-color="أزرق"></div>
+                        <div class="color-option" style="background-color: #e74c3c;" data-color="أحمر"></div>
+                        <div class="color-option" style="background-color: #2ecc71;" data-color="أخضر"></div>
+                        <div class="color-option" style="background-color: #f1c40f;" data-color="أصفر"></div>
+                        <div class="color-option" style="background-color: #9b59b6;" data-color="بنفسجي"></div>
+                        <div class="color-option" style="background-color: #1abc9c;" data-color="تركواز"></div>
+                    </div>
+                    <input type="hidden" id="selectedColor" name="color" value="أزرق">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">الكمية المطلوبة</label>
+                    <div class="quantity-selector">
+                        <button type="button" class="quantity-btn minus">-</button>
+                        <input type="number" class="quantity-input" value="1" min="1" max="10">
+                        <button type="button" class="quantity-btn plus">+</button>
+                    </div>
+                </div>
+                
+                <button type="submit" class="order-btn">
+                    <span>أكمل الطلب</span>
+                    <span>→</span>
+                </button>
+            </form>
+        </section>
+    </div>
 
+    <!-- مكتبات JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+    <script>
+        // Initialize Swiper
+        const swiper = new Swiper('.swiper', {
+            loop: true,
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+            slidesPerView: 1.2,
+            centeredSlides: true,
+            spaceBetween: 10,
+            breakpoints: {
+                480: {
+                    slidesPerView: 1.5,
+                    spaceBetween: 15
+                },
+                768: {
+                    slidesPerView: 2.5,
+                    spaceBetween: 20
+                }
+            }
+        });
+        
+        // Color selection
+        const colorOptions = document.querySelectorAll('.color-option');
+        const selectedColorInput = document.getElementById('selectedColor');
+        
+        colorOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                colorOptions.forEach(opt => opt.classList.remove('selected'));
+                option.classList.add('selected');
+                selectedColorInput.value = option.dataset.color;
+            });
+        });
+        
+        // Quantity selector
+        const minusBtn = document.querySelector('.quantity-btn.minus');
+        const plusBtn = document.querySelector('.quantity-btn.plus');
+        const quantityInput = document.querySelector('.quantity-input');
+        
+        minusBtn.addEventListener('click', () => {
+            let value = parseInt(quantityInput.value);
+            if (value > 1) {
+                quantityInput.value = value - 1;
+            }
+        });
+        
+        plusBtn.addEventListener('click', () => {
+            let value = parseInt(quantityInput.value);
+            if (value < 10) {
+                quantityInput.value = value + 1;
+            }
+        });
+        
+        // Form submission
+        const orderForm = document.getElementById('orderForm');
+        
+        orderForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // Here you would normally send the data to your server
+            // For demo purposes, we'll just show an alert
+            const formData = new FormData(orderForm);
+            const orderDetails = {
+                name: formData.get('fullName'),
+                phone1: formData.get('phone1'),
+                phone2: formData.get('phone2'),
+                address: formData.get('address'),
+                color: formData.get('color'),
+                quantity: quantityInput.value
+            };
+            
+            alert(`تم استلام طلبك بنجاح!\n\nالاسم: ${orderDetails.name}\nاللون: ${orderDetails.color}\nالكمية: ${orderDetails.quantity}\n\nسيتم التواصل معك قريبًا لتأكيد التفاصيل.`);
+            
+            // Reset form
+            orderForm.reset();
+            quantityInput.value = 1;
+            colorOptions[0].click(); // Reset to first color
+        });
+        
+        // Animation on scroll
+        document.addEventListener('DOMContentLoaded', () => {
+            const animatedElements = document.querySelectorAll('.animated');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = 1;
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            animatedElements.forEach(el => {
+                el.style.opacity = 0;
+                el.style.transform = 'translateY(20px)';
+                el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                observer.observe(el);
+            });
+        });
+    </script>
 </body>
 </html>
